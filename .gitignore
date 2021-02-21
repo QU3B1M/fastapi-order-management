@@ -125,5 +125,7 @@ venv.bak/
 dmypy.json
 
 # alembic
-
 alembic/versions/*
+
+# Project
+*.db
