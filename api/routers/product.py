@@ -1,19 +1,66 @@
-from fastapi import APIRouter, status
+from typing import List, Any
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from api.core.dependencies import get_db
+from api import crud, models, schemas
 
 
 router = APIRouter(prefix="/product", tags=["Product"])
 
 
-@router.post("/")
-async def product_create():
-    return status.HTTP_200_OK
+@router.get("/", response_model=List[schemas.Product])
+async def product_get_all(db: Session = Depends(get_db)) -> Any:
+    """
+    Retrieve products.
+    """
+    products = crud.product.get_multi(db=db)
+    return products
 
 
-@router.get("/all")
-async def product_get_all():
-    return {"products": ["fake_product_1", "fake_product_2"]}
+@router.post("/", response_model=schemas.Product)
+async def product_create(
+    product_in: schemas.ProductCreate, db: Session = Depends(get_db)
+) -> Any:
+    """
+    Create new product.
+    """
+    product = crud.product.create(db=db, obj_in=product_in)
+    return product
 
 
 @router.get("/{id}")
-async def product_get(id: int):
-    return {"product": "a_fake_product"}
+async def product_get(id: int, db: Session = Depends(get_db)) -> Any:
+    """
+    Get product by ID.
+    """
+    product = crud.product.get(db=db, id=id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
+
+@router.put("/{id}", response_model=schemas.Product)
+async def product_update(
+    id: int, product_in: schemas.ProductUpdate, db: Session = Depends(get_db)
+) -> Any:
+    """
+    Update a product.
+    """
+    product = crud.product.get(db=db, id=id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    product = crud.product.update(db=db, db_obj=product, obj_in=product_in)
+    return product
+
+
+@router.delete("/{id}", response_model=schemas.Product)
+async def product_delete(id: int, db: Session = Depends(get_db)) -> Any:
+    """
+    Delete an product.
+    """
+    product = crud.product.get(db=db, id=id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    product = crud.product.remove(db=db, id=id)
