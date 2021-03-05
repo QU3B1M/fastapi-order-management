@@ -1,5 +1,7 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
+
+from api.schemas.order import Order
 
 
 # Shared properties
@@ -23,6 +25,7 @@ class ProductUpdate(ProductBase):
 # Properties shared by models stored in DB
 class ProductInDBBase(ProductBase):
     id: int
+    # orders: Optional[List[Order]]
 
     class Config:
         orm_mode = True

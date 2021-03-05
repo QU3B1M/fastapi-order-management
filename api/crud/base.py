@@ -1,7 +1,9 @@
 from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
-from fastapi.encoders import jsonable_encoder
+
 from pydantic import BaseModel
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
+
 from api.db.base_class import Base
 
 
@@ -32,6 +34,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
     def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(obj_in)
+        print(obj_in_data, flush=True)
         db_obj = self.model(**obj_in_data)  # type: ignore
         db.add(db_obj)
         db.commit()
