@@ -1,39 +1,58 @@
 from typing import List, Optional
-from pydantic import BaseModel
+
+from pydantic import BaseModel, EmailStr
+
 from api.schemas.order import Order
 
 
-# Shared properties
 class CustomerBase(BaseModel):
+    """
+    Schema of the shared properties between every schema.
+    """
+
     name: str
-    email: str
+    email: EmailStr
     phone_number: int
 
 
-# Properties to receive on Customer creation
 class CustomerCreate(CustomerBase):
+    """
+    Schema of the properties to receive on Customer creation.
+    """
+
     pass
 
 
-# Properties to receive on Customer update
 class CustomerUpdate(CustomerBase):
+    """
+    Schema of the properties to receive on Customer update.
+    """
+
     pass
 
 
-# Properties shared by models stored in DB
 class CustomerInDBBase(CustomerBase):
+    """
+    Schema of the properties shared by models stored in DB.
+    """
+
     id: int
-    orders: Optional[List[Order]]
 
     class Config:
         orm_mode = True
 
 
-# Properties to return to client
 class Customer(CustomerInDBBase):
+    """
+    Schema of the properties to return to client.
+    """
+
     pass
 
 
-# Properties properties stored in DB
 class CustomerInDB(CustomerInDBBase):
+    """
+    Schema of the properties stored in DB.
+    """
+
     pass

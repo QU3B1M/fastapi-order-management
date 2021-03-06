@@ -1,8 +1,9 @@
 from typing import Generator
+
 from api.db.session import SessionLocal
 
 
-def get_db() -> Generator:
+async def get_db() -> Generator:
     try:
         db = SessionLocal()
         yield db

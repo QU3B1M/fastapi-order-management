@@ -1,41 +1,59 @@
 from typing import Optional, List
+
 from pydantic import BaseModel
 
 from api.schemas.order import Order
 
 
-# Shared properties
 class ProductBase(BaseModel):
+    """
+    Schema of the shared properties between every schema.
+    """
+
     name: str
     description: Optional[str]
     price: float
     stock: int
 
 
-# Properties to receive on Product creation
 class ProductCreate(ProductBase):
+    """
+    Schema of the properties to receive on Order creation.
+    """
+
     pass
 
 
-# Properties to receive on Product update
 class ProductUpdate(ProductBase):
+    """
+    Schema of the properties to receive on Order update.
+    """
+
     pass
 
 
-# Properties shared by models stored in DB
 class ProductInDBBase(ProductBase):
+    """
+    Schema of the properties shared by models stored in DB.
+    """
+
     id: int
-    # orders: Optional[List[Order]]
 
     class Config:
         orm_mode = True
 
 
-# Properties to return to client
 class Product(ProductInDBBase):
+    """
+    Schema of the properties to return to client.
+    """
+
     pass
 
 
-# Properties properties stored in DB
 class ProductInDB(ProductInDBBase):
+    """
+    Schema of the properties stored in DB.
+    """
+
     pass

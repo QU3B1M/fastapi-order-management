@@ -1,41 +1,64 @@
 from datetime import datetime
-from pydantic import BaseModel
 from typing import List, Optional
 
+from pydantic import BaseModel, validator
 
-# Shared properties
+
 class OrderBase(BaseModel):
+    """
+    Schema of the shared properties between every schema.
+    """
+
     description: Optional[str]
     customer_id: int
     product_id: int
 
 
-# Properties to receive on Order creation
 class OrderCreate(OrderBase):
+    """
+    Schema of the properties to receive on Customer creation.
+    """
+
     pass
-    # products: List[int]
 
 
-# Properties to receive on Order update
 class OrderUpdate(OrderBase):
-    # products: List[int]
+    """
+    Schema of the properties to receive on Customer update.
+    """
+
     pass
 
 
-# Properties shared by models stored in DB
 class OrderInDBBase(OrderBase):
+    """
+    Schema of the properties shared by models stored in DB.
+    """
+
     id: int
-    date: Optional[datetime] = datetime.now()
+    date: Optional[datetime]
+
+    @validator("date")
+    def date_validator(cls, v):
+        if not v:
+            return datetime.now()
+        return v
 
     class Config:
         orm_mode = True
 
 
-# Properties to return to client
 class Order(OrderInDBBase):
+    """
+    Schema of the properties to return to client.
+    """
+
     pass
 
 
-# Properties stored in DB
 class OrderInDB(OrderInDBBase):
+    """
+    Schema of the properties stored in DB.
+    """
+
     pass

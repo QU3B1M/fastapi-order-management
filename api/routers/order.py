@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from api.core.dependencies import get_db
-from api import crud, models, schemas
+from api import repositories, models, schemas
 
 
 router = APIRouter(prefix="/order", tags=["Order"])
@@ -15,7 +15,16 @@ async def order_get_all(db: Session = Depends(get_db)) -> Any:
     """
     Retrieve orders.
     """
-    orders = crud.order.get_multi(db=db)
+    orders = await repositories.order.get_multi(db=db)
+    return orders
+
+
+@router.get("/customer/{id}", response_model=List[schemas.Order])
+async def order_get_all_by_customer(id: int, db: Session = Depends(get_db)) -> Any:
+    """
+    Retrieve orders.
+    """
+    orders = await repositories.order.get_multi_by_customer(db=db, customer_id=id)
     return orders
 
 
@@ -26,7 +35,7 @@ async def order_create(
     """
     Create new order.
     """
-    order = crud.order.create(db=db, obj_in=order_in)
+    order = await repositories.order.create(db=db, obj_in=order_in)
     return order
 
 
@@ -35,7 +44,7 @@ async def order_get(id: int, db: Session = Depends(get_db)) -> Any:
     """
     Get order by ID.
     """
-    order = crud.order.get(db=db, id=id)
+    order = await repositories.order.get(db=db, id=id)
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
     return order
@@ -48,10 +57,10 @@ async def order_update(
     """
     Update a order.
     """
-    order = crud.order.get(db=db, id=id)
+    order = await repositories.order.get(db=db, id=id)
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
-    order = crud.order.update(db=db, db_obj=order, obj_in=order_in)
+    order = await repositories.order.update(db=db, db_obj=order, obj_in=order_in)
     return order
 
 
@@ -60,7 +69,7 @@ async def order_delete(id: int, db: Session = Depends(get_db)) -> Any:
     """
     Delete an order.
     """
-    order = crud.order.get(db=db, id=id)
+    order = await repositories.order.get(db=db, id=id)
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
-    order = crud.order.remove(db=db, id=id)
+    order = await repositories.order.remove(db=db, id=id)

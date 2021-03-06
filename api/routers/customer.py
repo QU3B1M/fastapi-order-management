@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from api.core.dependencies import get_db
-from api import crud, models, schemas
+from api import repositories, models, schemas
 
 
 router = APIRouter(prefix="/customer", tags=["Customer"])
@@ -15,7 +15,7 @@ async def customer_get_all(db: Session = Depends(get_db)) -> Any:
     """
     Retrieve customers.
     """
-    customers = crud.customer.get_multi(db=db)
+    customers = await repositories.customer.get_multi(db=db)
     return customers
 
 
@@ -26,7 +26,7 @@ async def customer_create(
     """
     Create new customer.
     """
-    customer = crud.customer.create(db=db, obj_in=customer_in)
+    customer = await repositories.customer.create(db=db, obj_in=customer_in)
     return customer
 
 
@@ -35,7 +35,7 @@ async def customer_get(id: int, db: Session = Depends(get_db)) -> Any:
     """
     Get customer by ID.
     """
-    customer = crud.customer.get(db=db, id=id)
+    customer = await repositories.customer.get(db=db, id=id)
     if not customer:
         raise HTTPException(status_code=404, detail="customer not found")
     return customer
@@ -48,10 +48,12 @@ async def customer_update(
     """
     Update a customer.
     """
-    customer = crud.customer.get(db=db, id=id)
+    customer = await repositories.customer.get(db=db, id=id)
     if not customer:
         raise HTTPException(status_code=404, detail="customer not found")
-    customer = crud.customer.update(db=db, db_obj=customer, obj_in=customer_in)
+    customer = await repositories.customer.update(
+        db=db, db_obj=customer, obj_in=customer_in
+    )
     return customer
 
 
@@ -60,7 +62,7 @@ async def customer_delete(id: int, db: Session = Depends(get_db)) -> Any:
     """
     Delete an customer.
     """
-    customer = crud.customer.get(db=db, id=id)
+    customer = await repositories.customer.get(db=db, id=id)
     if not customer:
         raise HTTPException(status_code=404, detail="customer not found")
-    customer = crud.customer.remove(db=db, id=id)
+    customer = await repositories.customer.remove(db=db, id=id)
