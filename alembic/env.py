@@ -8,7 +8,7 @@ from alembic import context
 
 sys.path = ["", ".."] + sys.path[1:]  # Alembic didnt recognize its root
 
-from api.db.base import Base
+from app.db.base import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

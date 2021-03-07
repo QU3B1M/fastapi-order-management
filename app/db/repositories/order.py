@@ -3,9 +3,9 @@ from typing import List
 from sqlalchemy.orm import Session
 from fastapi.encoders import jsonable_encoder
 
-from api.repositories.base import BaseRepository
-from api.models.order import Order
-from api.schemas.order import OrderCreate, OrderUpdate
+from app.db.repositories.base import BaseRepository
+from app.db.models.order import Order
+from app.schemas.order import OrderCreate, OrderUpdate
 
 
 class OrderRepository(BaseRepository[Order, OrderCreate, OrderUpdate]):

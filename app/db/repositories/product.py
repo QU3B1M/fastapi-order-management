@@ -1,6 +1,6 @@
-from api.repositories.base import BaseRepository
-from api.models.product import Product
-from api.schemas.product import ProductCreate, ProductUpdate
+from app.db.repositories.base import BaseRepository
+from app.db.models.product import Product
+from app.schemas.product import ProductCreate, ProductUpdate
 
 
 class ProductRepository(BaseRepository[Product, ProductCreate, ProductUpdate]):

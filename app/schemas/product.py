@@ -2,7 +2,7 @@ from typing import Optional, List
 
 from pydantic import BaseModel
 
-from api.schemas.order import Order
+from app.schemas.order import Order
 
 
 class ProductBase(BaseModel):

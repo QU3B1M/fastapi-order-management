@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel, EmailStr
 
-from api.schemas.order import Order
+from app.schemas.order import Order
 
 
 class CustomerBase(BaseModel):

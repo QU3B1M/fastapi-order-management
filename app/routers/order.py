@@ -3,8 +3,9 @@ from typing import List, Any
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from api.core.dependencies import get_db
-from api import repositories, models, schemas
+from app.dependencies import get_db
+from app.db import models, repositories
+from app import schemas
 
 
 router = APIRouter(prefix="/order", tags=["Order"])
