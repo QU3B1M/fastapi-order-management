@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.api.dependencies.database import get_db
+from app.api.dependencies.authentication import get_current_user
 from app.db import models, repositories
 from app import schemas
 
@@ -12,7 +13,10 @@ router = APIRouter(prefix="/order", tags=["Order"])
 
 
 @router.get("/", response_model=List[schemas.Order])
-async def order_get_all(db: Session = Depends(get_db)) -> Any:
+async def order_get_all(
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
+) -> Any:
     """
     Retrieve orders.
     """
@@ -21,7 +25,11 @@ async def order_get_all(db: Session = Depends(get_db)) -> Any:
 
 
 @router.get("/customer/{id}", response_model=List[schemas.Order])
-async def order_get_all_by_customer(id: int, db: Session = Depends(get_db)) -> Any:
+async def order_get_all_by_customer(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
+) -> Any:
     """
     Retrieve orders.
     """
@@ -31,7 +39,9 @@ async def order_get_all_by_customer(id: int, db: Session = Depends(get_db)) -> A
 
 @router.post("/", response_model=schemas.Order)
 async def order_create(
-    order_in: schemas.OrderCreate, db: Session = Depends(get_db)
+    order_in: schemas.OrderCreate,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
 ) -> Any:
     """
     Create new order.
@@ -41,7 +51,11 @@ async def order_create(
 
 
 @router.get("/{id}")
-async def order_get(id: int, db: Session = Depends(get_db)) -> Any:
+async def order_get(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
+) -> Any:
     """
     Get order by ID.
     """
@@ -53,7 +67,10 @@ async def order_get(id: int, db: Session = Depends(get_db)) -> Any:
 
 @router.put("/{id}", response_model=schemas.Order)
 async def order_update(
-    id: int, order_in: schemas.OrderUpdate, db: Session = Depends(get_db)
+    id: int,
+    order_in: schemas.OrderUpdate,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
 ) -> Any:
     """
     Update a order.
@@ -66,7 +83,11 @@ async def order_update(
 
 
 @router.delete("/{id}", response_model=schemas.Order)
-async def order_delete(id: int, db: Session = Depends(get_db)) -> Any:
+async def order_delete(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
+) -> Any:
     """
     Delete an order.
     """
