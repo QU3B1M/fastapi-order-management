@@ -3,7 +3,8 @@ from typing import List, Any
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.dependencies import get_db
+from app.api.dependencies.database import get_db
+from app.api.dependencies.authentication import get_current_user
 from app.db import models, repositories
 from app import schemas
 
@@ -12,7 +13,10 @@ router = APIRouter(prefix="/customer", tags=["Customer"])
 
 
 @router.get("/", response_model=List[schemas.Customer])
-async def customer_get_all(db: Session = Depends(get_db)) -> Any:
+async def customer_get_all(
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
+) -> Any:
     """
     Retrieve customers.
     """
@@ -22,7 +26,9 @@ async def customer_get_all(db: Session = Depends(get_db)) -> Any:
 
 @router.post("/", response_model=schemas.Customer)
 async def customer_create(
-    customer_in: schemas.CustomerCreate, db: Session = Depends(get_db)
+    customer_in: schemas.CustomerCreate,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
 ) -> Any:
     """
     Create new customer.
@@ -32,7 +38,11 @@ async def customer_create(
 
 
 @router.get("/{id}")
-async def customer_get(id: int, db: Session = Depends(get_db)) -> Any:
+async def customer_get(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
+) -> Any:
     """
     Get customer by ID.
     """
@@ -44,7 +54,10 @@ async def customer_get(id: int, db: Session = Depends(get_db)) -> Any:
 
 @router.put("/{id}", response_model=schemas.Customer)
 async def customer_update(
-    id: int, customer_in: schemas.CustomerUpdate, db: Session = Depends(get_db)
+    id: int,
+    customer_in: schemas.CustomerUpdate,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
 ) -> Any:
     """
     Update a customer.
@@ -59,7 +72,11 @@ async def customer_update(
 
 
 @router.delete("/{id}", response_model=schemas.Customer)
-async def customer_delete(id: int, db: Session = Depends(get_db)) -> Any:
+async def customer_delete(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
+) -> Any:
     """
     Delete an customer.
     """
