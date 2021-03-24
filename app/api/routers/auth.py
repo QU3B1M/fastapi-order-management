@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.core.security import create_access_token
 from app.core.config import settings
 from app.api.dependencies.database import get_db
-from app.api.utils import incorrect_password
+from app.api.utils import incorrect_password_exception
 from app.db import repositories
 from app import schemas
 
@@ -23,7 +23,7 @@ async def login(
         db=db, username=form_data.username, password=form_data.password
     )
     if not user:
-        raise incorrect_password
+        raise incorrect_password_exception
     expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(subject=user.username, expires_delta=expires)
 

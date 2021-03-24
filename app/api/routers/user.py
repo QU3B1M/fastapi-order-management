@@ -3,8 +3,9 @@ from typing import List, Any
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.api.dependencies.database import get_db
 from app.api.dependencies.authentication import get_current_user
+from app.api.dependencies.database import get_db
+from app.api.utils import unauthorized_user_exception
 from app.db import models, repositories
 from app import schemas
 
@@ -20,8 +21,10 @@ async def user_get_all(
     """
     Retrieve users.
     """
-    users = await repositories.user.get_multi(db=db)
-    return users
+    if not current_user.is_superuser:
+        raise unauthorized_user_exception
+
+    return await repositories.user.get_multi(db=db)
 
 
 @router.get("/me", response_model=schemas.User)
@@ -50,9 +53,11 @@ async def user_get(
     """
     Get user by ID.
     """
+    if not current_user.is_superuser:
+        raise unauthorized_user_exception
     user = await repositories.user.get(db=db, id=id)
     if not user:
-        raise HTTPException(status_code=404, detail="user not found")
+        raise HTTPException(status_code=404, detail="User not found.")
     return user
 
 
@@ -66,11 +71,12 @@ async def user_update(
     """
     Update a user.
     """
+    if not current_user.is_superuser:
+        raise unauthorized_user_exception
     user = await repositories.user.get(db=db, id=id)
     if not user:
-        raise HTTPException(status_code=404, detail="user not found")
-    user = await repositories.user.update(db=db, db_obj=user, obj_in=user_in)
-    return user
+        raise HTTPException(status_code=404, detail="User not found.")
+    return await repositories.user.update(db=db, db_obj=user, obj_in=user_in)
 
 
 @router.delete("/{id}", response_model=schemas.User)
@@ -82,7 +88,9 @@ async def user_delete(
     """
     Delete an user.
     """
+    if not current_user.is_superuser:
+        raise unauthorized_user_exception
     user = await repositories.user.get(db=db, id=id)
     if not user:
         raise HTTPException(status_code=404, detail="user not found")
-    user = await repositories.user.remove(db=db, id=id)
+    return await repositories.user.remove(db=db, id=id)

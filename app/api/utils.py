@@ -9,7 +9,13 @@ credentials_exception = HTTPException(
     headers={"WWW-Authenticate": "Bearer"},
 )
 
-incorrect_password = HTTPException(
+unauthorized_user_exception = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="User not authorized for this action.",
+    headers={"WWW-Authenticate": "Bearer"},
+)
+
+incorrect_password_exception = HTTPException(
     status_code=status.HTTP_400_BAD_REQUEST,
     detail="Incorrect username or password",
     headers={"WWW-Authenticate": "Bearer"},
