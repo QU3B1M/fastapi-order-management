@@ -129,3 +129,4 @@ alembic/versions/*
 
 # Project
 *.db
+/*.db
