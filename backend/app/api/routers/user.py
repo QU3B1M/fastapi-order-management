@@ -33,7 +33,7 @@ async def read_users_me(current_user: schemas.User = Depends(get_current_user)):
     return current_user
 
 
-@router.post("/", response_model=schemas.User)
+@router.post("/register", response_model=schemas.User)
 async def user_create(
     user_in: schemas.UserCreate, db: Session = Depends(get_db)
 ) -> Any:
