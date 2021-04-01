@@ -36,7 +36,6 @@ class UserInDBBase(UserBase):
     """
 
     id: int
-    hashed_password: str
 
     class Config:
         orm_mode = True
@@ -55,4 +54,4 @@ class UserInDB(UserInDBBase):
     Schema of the properties stored in DB.
     """
 
-    pass
+    hashed_password: str
