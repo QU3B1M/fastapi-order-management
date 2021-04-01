@@ -10,7 +10,6 @@ from app.api import router
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
-
 if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(
         CORSMiddleware,
@@ -19,6 +18,5 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
 
 app.include_router(router)

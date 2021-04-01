@@ -36,7 +36,7 @@ function RegistrationForm(props) {
                 "email":state.email,
                 "password":state.password,
             }
-            axios.post('http://127.0.0.1:8000/user/register', payload)
+            axios.post(API_BASE_URL + '/user/register', payload)
                 .then(function (response) {
                     if(response.status === 200){
                         setState(prevState => ({
@@ -54,24 +54,33 @@ function RegistrationForm(props) {
                 });    
         } else {
             props.showError('Please enter valid username and password')    
-        }
-        
+        }        
     }
 
   return(
     <div className="card col-12 col-lg-4 login-card mt-2 hv-center">
         <form>
             <div className="form-group text-left">
-            <label htmlFor="exampleInputEmail1">Email address</label>
-            <input type="email" 
-                   className="form-control" 
-                   id="email" 
-                   aria-describedby="emailHelp" 
-                   placeholder="Enter email" 
-                   value={state.email}
-                   onChange={handleChange}
-            />
-            <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+                <label htmlFor="username">Username</label>
+                <input type="text" 
+                    className="form-control" 
+                    id="username" 
+                    placeholder="Enter username" 
+                    value={state.username}
+                    onChange={handleChange}
+                />
+            </div>
+            <div className="form-group text-left">
+                <label htmlFor="exampleInputEmail1">Email address</label>
+                <input type="email" 
+                    className="form-control" 
+                    id="email" 
+                    aria-describedby="emailHelp" 
+                    placeholder="Enter email" 
+                    value={state.email}
+                    onChange={handleChange}
+                />
+                <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
             <div className="form-group text-left">
                 <label htmlFor="exampleInputPassword1">Password</label>

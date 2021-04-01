@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = [
         "http://localhost",
         "http://localhost:3000/",
+        "http://localhost:3000",
     ]
 
 
