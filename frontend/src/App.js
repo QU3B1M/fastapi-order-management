@@ -1,8 +1,7 @@
 import './App.css';
-import Header from './components/Header/Header';
-
+import Header from './components/Header/header';
 import React, {useState} from 'react';
-import RegistrationForm from './components/RegistrationForm/RegistrationForm';
+import RegistrationForm from './components/RegistrationForm/registrationForm';
 import {
   BrowserRouter as Router,
   Switch,
@@ -15,7 +14,7 @@ function App() {
   const [errorMessage, updateErrorMessage] = useState(null);
   return (
     <Router>
-    <div className="App">
+    <div className="App background">
       <Header title={title}/>
         <div className="container d-flex align-items-center flex-column">
           <Switch>
