@@ -1,5 +1,5 @@
-# Orders and Customers Management App
+# OCM Backend API
 
-----------
-TODO README
-----------
+An Orders and Customers Management Backend API made in Python using FasAPI\
+TODO Full README
+------
