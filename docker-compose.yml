@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+  # db:
+  #   image: postgres:12
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=postgres
+  #     - POSTGRES_DB=api
+
+  app:
+    build: app/
+    restart: always
+    command: bash -c "python3 main.py"
+    volumes:
+      - ./app:/code
+    ports:
+      - "8000:8000"
+    # depends_on:
+    #   - db
