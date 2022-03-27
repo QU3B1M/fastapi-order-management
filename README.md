@@ -1,5 +1,9 @@
-# OCM Backend API
+# FastAPI Order Management API
 
-An Orders and Customers Management Backend API made in Python using FasAPI\
-TODO Full README
-------
+Orders and Customers Management Backend API made in Python using FasAPI.
+
+## TODO: README
+
+## License
+
+This project is licensed under the [MIT license](LICENSE).
